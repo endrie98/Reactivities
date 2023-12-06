@@ -14,6 +14,13 @@ builder.Services.AddDbContext<DataContext>(opt => {
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+// http://127.0.0.1:3000 dosn't work with localhost:3000
+builder.Services.AddCors(opt => {
+    opt.AddPolicy("CorsPolicy", policy => {
+        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://127.0.0.1:3000");
+    });
+});
+
 
 var app = builder.Build();
 
@@ -25,6 +32,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
+
+app.UseCors("CorsPolicy");
 
 app.MapControllers();
 
