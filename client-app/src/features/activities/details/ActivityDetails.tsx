@@ -1,12 +1,22 @@
 import { Button, Card, Image } from "semantic-ui-react"
 import { useStore } from "../../../app/stores/store"
+import { observer } from "mobx-react-lite"
+import { Link, useParams } from "react-router-dom"
+import { useEffect } from "react"
+import LoadingComponent from "../../../app/layout/LoadingComponent"
 
 const ActivityDetails = () => {
 
     const { activityStore } = useStore()
-    const { selectedActivity: activity, cancelSelectedActivity, openForm } = activityStore
+    const { selectedActivity: activity, loadActivity, loadingInitial } = activityStore
 
-    if(!activity) return
+    const { id } = useParams()
+    
+    useEffect(() => {
+        if(id) loadActivity(id)
+    }, [id, loadActivity])
+
+    if(loadingInitial || !activity) return <LoadingComponent content="Finding the Activity" />
 
     return (
         <Card fluid>
@@ -22,12 +32,12 @@ const ActivityDetails = () => {
             </Card.Content>
             <Card.Content extra>
                 <div className="ui two buttons">
-                    <Button basic color="blue" onClick={() => openForm(activity.id)} content='Edit' />
-                    <Button basic onClick={cancelSelectedActivity} color="grey" content='Cancel' />
+                    <Button as={Link} to={`/manage/${activity.id}`} basic color="blue" content='Edit' />
+                    <Button as={Link} to='/activities' basic color="grey" content='Cancel' />
                 </div>
             </Card.Content>
         </Card>
     )
 }
 
-export default ActivityDetails
+export default observer(ActivityDetails)
