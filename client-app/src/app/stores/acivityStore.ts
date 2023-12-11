@@ -21,6 +21,19 @@ export default class ActivityStore {
         return Array.from(this.activityRegistry.values()).sort((first, second) => Date.parse(first.date) - Date.parse(second.date))
     }
 
+    get groupedActivities() {
+        return Object.entries(
+            this.activitiesByDate.reduce((activities, activity) => {
+                const date = activity.date
+                activities[date] = activities[date] ? [...activities[date], activity] : [activity]
+                return activities
+            }, {} as {[key: string]: Activity[]})
+        )
+    }
+
+    // for that get groupedActivity...
+    // we have an array of objects each object has a key which is going to be activity date, and for each date we are going to have an array of activities inside there
+
     loadActivities = async () => {
         this.loadingInitial = true
         this.selectedActivity = undefined
