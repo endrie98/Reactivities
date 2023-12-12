@@ -38,7 +38,7 @@ const ActivityForm = () => {
         category: Yup.string().required('The activity category is required'),
         date: Yup.string().required('The activity date is required'),
         venue: Yup.string().required('The activity venue is required'),
-        city: Yup.string().required('the activity city is required')
+        city: Yup.string().required('The activity city is required')
     })
 
     useEffect(() => {
