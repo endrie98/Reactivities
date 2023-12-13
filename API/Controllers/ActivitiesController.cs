@@ -10,7 +10,6 @@ namespace API.Controllers
 {
     public class ActivitiesController : BaseApiController
     {
-        [AllowAnonymous]
         [HttpGet] // api/activities
 
         public async Task<IActionResult> GetActivities() 
@@ -37,6 +36,7 @@ namespace API.Controllers
             return HandleResult(result);
         }
 
+        [Authorize(Policy = "IsActivityHost")]
         [HttpPut("{id}")] // Edit Activity
         public async Task<IActionResult> EditActivity(Guid id, Activity activity)
         {
@@ -47,10 +47,19 @@ namespace API.Controllers
             return HandleResult(result);
         }
 
+        [Authorize(Policy = "IsActivityHost")]
         [HttpDelete("{id}")] // Delete Activity
         public async Task<IActionResult> DeleteActivity(Guid id)
         {
             var result = await Mediator.Send(new Delete.Command {Id = id});
+
+            return HandleResult(result);
+        }
+
+        [HttpPost("{id}/attend")]
+        public async Task<IActionResult> Attend(Guid id)
+        {
+            var result = await Mediator.Send(new UpdateAttendance.Command{Id = id});
 
             return HandleResult(result);
         }
