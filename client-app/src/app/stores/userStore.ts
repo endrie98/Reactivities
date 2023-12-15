@@ -19,7 +19,7 @@ export default class UserStore {
         try {
             const user = await agent.Account.login(creds)
             store.commonStore.setToken(user.data.token)
-            runInAction(() => this.user = user.data) 
+            runInAction(() => this.user = user.data)
             router.navigate('/activities')
             store.modalStore.closeModal()
         } catch (error) {
@@ -31,7 +31,7 @@ export default class UserStore {
         try {
             const user = await agent.Account.register(creds)
             store.commonStore.setToken(user.data.token)
-            runInAction(() => this.user = user.data) 
+            runInAction(() => this.user = user.data)
             router.navigate('/activities')
             store.modalStore.closeModal()
         } catch (error) {
@@ -51,6 +51,12 @@ export default class UserStore {
             runInAction(() => this.user = user)
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    setImage = (image: string) => {
+        if (this.user) {
+            this.user.image = image
         }
     }
 }
