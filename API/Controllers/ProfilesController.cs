@@ -15,5 +15,11 @@ namespace API.Controllers
             // this new Details.Query must be from Aplication.Profiles ... take care coz another class with Details name is in Aplication.Activities
             return HandleResult(await Mediator.Send(new Details.Query{Username = username}));
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Edit(Edit.Command command)
+        {
+            return HandleResult(await Mediator.Send(command));
+        } 
     }
 }
