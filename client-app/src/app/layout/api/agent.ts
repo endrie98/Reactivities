@@ -99,7 +99,9 @@ const Profiles = {
     },
     setMainPhoto: (id: string) => axios.post(`/photos/${id}/setMain`, {}),
     deletePhoto: (id: string) => axios.delete(`/photos/${id}`),
-    updateProfile: (profile: Partial<Profile>) => axios.put(`/profiles`, profile)
+    updateProfile: (profile: Partial<Profile>) => axios.put(`/profiles`, profile),
+    updateFollowing: (username: string) => axios.post(`/follow/${username}`, {}),
+    listFollowings: (username: string, predicate: string) => request.get<Profile[]>(`/follow/${username}?predicate=${predicate}`)
 }
 
 const agent = {
