@@ -5,6 +5,8 @@ import { router } from '../../router/Routes'
 import { store } from '../../stores/store'
 import { User, UserFormValues } from '../../../models/user'
 import { Photo, Profile } from '../../../models/profile'
+import { PaginationResult } from '../../../models/pagination'
+import { UserActivity } from '../../../models/userActivity'
 
 axios.defaults.baseURL = 'http://localhost:5000/api'
 
@@ -22,6 +24,11 @@ axios.interceptors.request.use(config => {
 
 axios.interceptors.response.use(async response => {
     await sleep(1000)
+    const pagination = response.headers["pagination"]
+    if(pagination) {
+        response.data = new PaginationResult(response.data, JSON.parse(pagination))
+        return response as AxiosResponse<PaginationResult<any>>
+    }
     return response
 }, (error: AxiosError) => {
     const { data, status, config } = error.response as AxiosResponse;
@@ -69,7 +76,7 @@ const request = {
 }
 
 const Activities = {
-    list: () => request.get<Activity[]>('/activities'),
+    list: (params: URLSearchParams) => axios.get<PaginationResult<Activity[]>>('/activities', {params}).then(responseBody),
     details: (id: string) => request.get<Activity>(`/activities/${id}`),
 
     // create: (activity: Activity) => request.post('/activities', activity),
@@ -101,7 +108,8 @@ const Profiles = {
     deletePhoto: (id: string) => axios.delete(`/photos/${id}`),
     updateProfile: (profile: Partial<Profile>) => axios.put(`/profiles`, profile),
     updateFollowing: (username: string) => axios.post(`/follow/${username}`, {}),
-    listFollowings: (username: string, predicate: string) => request.get<Profile[]>(`/follow/${username}?predicate=${predicate}`)
+    listFollowings: (username: string, predicate: string) => request.get<Profile[]>(`/follow/${username}?predicate=${predicate}`),
+    listActivities: (username: string, predicate: string) => request.get<UserActivity[]>(`/profiles/${username}/activities?predicate=${predicate}`)
 }
 
 const agent = {
