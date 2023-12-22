@@ -37,12 +37,7 @@ const ActivityDetailChat = ({ activityId }: Props) => {
             </Segment>
             <Segment attached clearing>
                 <Formik
-                    onSubmit={(values, { resetForm }) => commentStore.addComment(values).then(() => {
-                        resetForm()
-                        setTimeout(() => {
-                            location.reload()
-                        }, 1000)
-                    })}
+                    onSubmit={(values, { resetForm }) => commentStore.addComment(values).then(() => resetForm() )}
                     initialValues={{ body: '' }}
                     validationSchema={Yup.object({
                         body: Yup.string().required()

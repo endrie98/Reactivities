@@ -97,7 +97,6 @@ export default class ActivityStore {
         this.selectedActivity = undefined
         try {
             const result = await agent.Activities.list(this.axiosParams)
-            console.log(result)
             runInAction(() => {
                 result.data.forEach(activity => {
                     this.setActivity(activity)

@@ -60,7 +60,7 @@ namespace Application.Comments
 
                 var success = await _context.SaveChangesAsync() > 0;
 
-                if(success) Result<CommentDto>.Success(_mapper.Map<CommentDto>(comment));
+                if(success) return Result<CommentDto>.Success(_mapper.Map<CommentDto>(comment));
 
                 return Result<CommentDto>.Failure("Failed to add Comment");
             }
