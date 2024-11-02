@@ -97,6 +97,7 @@ export default class ActivityStore {
         this.selectedActivity = undefined
         try {
             const result = await agent.Activities.list(this.axiosParams)
+            console.log(result)
             runInAction(() => {
                 result.data.forEach(activity => {
                     this.setActivity(activity)
@@ -106,9 +107,7 @@ export default class ActivityStore {
             })
         } catch (error) {
             console.log(error)
-            runInAction(() => {
-                this.loadingInitial = false
-            })
+            runInAction(() =>  this.loadingInitial = false)
         }
     }
 
@@ -119,6 +118,7 @@ export default class ActivityStore {
     loadActivity = async (id: string) => {
         let activity = this.getActivity(id)
         if (activity) {
+            console.log(activity)
             this.selectedActivity = activity
             this.loadingInitial = false
             return activity

@@ -9,7 +9,7 @@ const ActivityList = () => {
 
     const { activityStore } = useStore()
     const { groupedActivities } = activityStore
-    // console.log(groupedActivities)
+    console.log(groupedActivities)
 
     return (
         <>

@@ -19,7 +19,7 @@ namespace API.Extensions
 
             services.AddDbContext<DataContext>(opt =>
             {
-                opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+                opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
             });
 
             // http://127.0.0.1:3000 dosn't work with localhost:3000
